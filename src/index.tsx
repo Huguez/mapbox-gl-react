@@ -13,6 +13,11 @@ if( !navigator.geolocation ){
    throw new Error("No hay Geolocalizacion!!!")
 }
 
+if( mapboxgl.supported() === false ){
+   alert("No Soporta mapboxgl!!!");
+   throw new Error("No Soporta mapboxgl!!!")
+}
+
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );

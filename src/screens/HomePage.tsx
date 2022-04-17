@@ -1,10 +1,12 @@
 import React from 'react'
-import { MapView } from '../components'
+import { SearchBar, BtnMyLocation, MapView } from '../components'
 
 export const HomePage = () => {
   return (
       <div>
+         <SearchBar />
          <MapView />
+         <BtnMyLocation />
       </div>
   )
 }
