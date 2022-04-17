@@ -1,5 +1,6 @@
-import { useReducer } from "react";
+import { useEffect, useReducer } from "react";
 import { PlacesContext, placesReducer } from "../"
+import { getUserLocation } from "../../helpers";
 
 export interface PlacesState {
    isLoading: boolean;
@@ -18,6 +19,13 @@ const INITIAL_STATE:PlacesState = {
 export const PlacesProvider = ( { children } : PlacesProvidersProps ) => {
 
    const [ state, dispatch ] = useReducer( placesReducer, INITIAL_STATE )
+
+   useEffect( () => {
+      getUserLocation().then( ( resp ) => {
+         dispatch( { type: "setUserLocation", payload: resp } )
+      } ).catch( err => console.log( "PlacesProvider: ", err ) )
+   }, [] )
+   
    
    return (
       <PlacesContext.Provider value={ { ...state } }>
