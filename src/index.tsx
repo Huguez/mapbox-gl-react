@@ -4,12 +4,14 @@ import MapsApp from './MapsApp';
 
 import "./styles.css"
 
+import mapboxgl from 'mapbox-gl'; // or "const mapboxgl = require('mapbox-gl');"
+
+mapboxgl.accessToken = 'pk.eyJ1IjoiaHVndWV6IiwiYSI6ImNsMjMyMHZpdzE2YjUzam1qdGJ3dzJmdmUifQ.SSn9uQNLZFktRQreo7-u4g';
+
 if( !navigator.geolocation ){
    alert("No hay Geolocalizacion!!!");
    throw new Error("No hay Geolocalizacion!!!")
 }
-
-
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
