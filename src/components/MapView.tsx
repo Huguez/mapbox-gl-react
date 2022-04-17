@@ -1,10 +1,12 @@
-import { useContext, useLayoutEffect, useRef } from 'react'
-import { PlacesContext } from '../context'
+import { useContext, useLayoutEffect, useRef } from 'react';
+import { MapContext, PlacesContext } from '../context'
 import { Loading } from '.'
 import { Map, supported } from 'mapbox-gl'
 
 export const MapView = () => {
    const { isLoading, userLocation } = useContext( PlacesContext )
+   const { setMap } = useContext( MapContext )
+   
    const mapRef = useRef<HTMLDivElement>(null)
 
    useLayoutEffect( () => {
@@ -16,8 +18,10 @@ export const MapView = () => {
                style: 'mapbox://styles/mapbox/streets-v11', // style URL
                center: userLocation ||  [-74.5, 40], // starting position [lng, lat]
                zoom: 9 // starting zoom
-               } );
-            }
+            } );
+
+            setMap( map )
+         }
       }else{
          console.log("No lo Soporta men!!")
       }
