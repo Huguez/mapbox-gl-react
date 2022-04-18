@@ -1,5 +1,5 @@
-import { ChangeEvent, useContext, useReducer } from 'react'
-import { PlacesContext, placesReducer } from '../context'
+import { ChangeEvent, useContext} from 'react'
+import { PlacesContext } from '../context'
 import { useRef } from 'react';
 import { SearchResults } from './SearchResults';
 

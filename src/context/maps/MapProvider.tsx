@@ -1,10 +1,13 @@
+/* eslint import/no-webpack-loader-syntax: off */
+
 import { useReducer, useCallback, useContext, useEffect } from 'react';
-import { Map, Marker, Popup, LngLatBounds, AnySourceData } from 'mapbox-gl';
+//@ts-ignore
+import { Map, Marker, Popup, LngLatBounds, AnySourceData } from '!mapbox-gl';
 import { MapContext } from './MapContext';
 import { mapReducer } from './mapReducer';
 import { PlacesContext } from '../';
 import { direccionsApi } from '../../apis';
-import { RoutesResponse, Feature } from '../../interfaces/interfaces';
+import { RoutesResponse } from '../../interfaces/interfaces';
 
 export interface MapState {
    isMapReady: boolean;
@@ -41,7 +44,7 @@ export const MapProvider = ( props: MapProviderProps ) => {
       dispatch( { type: "setMarkers", payload: newMarkers } )
 
       
-   }, [ places ] )
+   }, [ places, state.markers, state.map ] )
 
    const setMap = useCallback(  ( map: Map ) => {
       
@@ -56,14 +59,15 @@ export const MapProvider = ( props: MapProviderProps ) => {
    const getRouteBetweenPoints  = async ( start: [ number, number ], end: [ number, number ] ) => {
       
       const resp =  await direccionsApi.get<RoutesResponse>( `${ start.join(',') };${ end.join(',') }`, {} );
-      const { distance, duration, geometry } = resp.data.routes[0]
+      const {  geometry } = resp.data.routes[0]
       const { coordinates: coords } = geometry
       
-      let kms = distance / 1000; 
-      kms = Math.round( kms * 100 )
-      kms /= 100;
+      // distance, duration,
+      // let kms = distance / 1000; 
+      // kms = Math.round( kms * 100 )
+      // kms /= 100;
       
-      const minutes = Math.floor( duration / 60 );
+      // const minutes = Math.floor( duration / 60 );
       
       const bounds = new LngLatBounds( [ start, start ] );
       
