@@ -1,7 +1,7 @@
 import { useEffect, useReducer } from "react";
 import { PlacesContext, placesReducer } from "../"
 import { getUserLocation } from "../../helpers";
-import searchApi from '../../apis/searchApi';
+import { searchApi } from '../../apis';
 import { Feature, PlacesResponse } from '../../interfaces/interfaces';
 
 export interface PlacesState {
