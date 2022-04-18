@@ -24,8 +24,9 @@ export const MapView = () => {
       }else{
          console.log("No lo Soporta men!!")
       }
-   }, [ isLoading ] )
+   }, [ isLoading, userLocation, setMap ] )
 
+   
 
    if( isLoading && !isMapReady ){
       return <Loading />

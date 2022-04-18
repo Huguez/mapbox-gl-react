@@ -1,7 +1,6 @@
-import React from 'react'
+import { useReducer, useCallback } from 'react';
 import { Map, Marker, Popup } from 'mapbox-gl';
 import { MapContext } from './MapContext';
-import { useReducer } from 'react';
 import { mapReducer } from './mapReducer';
 
 export interface MapState {
@@ -21,7 +20,7 @@ const INITIAL_STATE : MapState = {
 export const MapProvider = ( props: MapProviderProps ) => {
    const [ state, dispatch ] = useReducer( mapReducer, INITIAL_STATE )
 
-   const setMap = ( map: Map ) => {
+   const setMap = useCallback(  ( map: Map ) => {
       
       const popup = new Popup().setHTML( `<h4> Aqui esta el Huguez </h4>` )
 
@@ -29,7 +28,7 @@ export const MapProvider = ( props: MapProviderProps ) => {
 
 
       dispatch( { type: "setMap", payload: map } )
-   }
+   }, [] )
 
    return (
       <MapContext.Provider value={ {...state, setMap} } >

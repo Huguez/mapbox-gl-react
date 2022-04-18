@@ -1,4 +1,3 @@
-import React from 'react'
 import { MapState } from './MapProvider'
 import { Map } from 'mapbox-gl'
 
