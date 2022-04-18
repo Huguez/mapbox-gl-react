@@ -42,7 +42,7 @@ export const SearchResults = () => {
                      
                      <p className={` ${ active === place.id ? "text-white" : "text-muted" } `} style={{fontSize: "12px"}}> { place.place_name } </p>
 
-                     <button onClick={ ( ) => getRoute( place ) } className={`btn ${ active === place.id ? "btn-secondary" : "btn-primary" } btn-sm`}> ir a la ubicación </button>
+                     <button onClick={ ( ) => getRoute( place ) } className={`btn ${ active === place.id ? "btn-secondary" : "btn-primary" } btn-sm`}> Trazar ruta </button>
                   </li>
                ) )
             }

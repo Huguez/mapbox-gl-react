@@ -1,10 +1,10 @@
 import { useReducer, useCallback, useContext, useEffect } from 'react';
-import { Map, Marker, Popup } from 'mapbox-gl';
+import { Map, Marker, Popup, LngLatBounds, AnySourceData } from 'mapbox-gl';
 import { MapContext } from './MapContext';
 import { mapReducer } from './mapReducer';
 import { PlacesContext } from '../';
 import { direccionsApi } from '../../apis';
-import { RoutesResponse } from '../../interfaces/interfaces';
+import { RoutesResponse, Feature } from '../../interfaces/interfaces';
 
 export interface MapState {
    isMapReady: boolean;
@@ -57,13 +57,62 @@ export const MapProvider = ( props: MapProviderProps ) => {
       
       const resp =  await direccionsApi.get<RoutesResponse>( `${ start.join(',') };${ end.join(',') }`, {} );
       const { distance, duration, geometry } = resp.data.routes[0]
+      const { coordinates: coords } = geometry
       
       let kms = distance / 1000; 
       kms = Math.round( kms * 100 )
       kms /= 100;
       
       const minutes = Math.floor( duration / 60 );
-      console.log( { kms, minutes } );
+      
+      const bounds = new LngLatBounds( [ start, start ] );
+      
+      for( const coord of coords ) {
+         const newCoord: [ number, number ] = [ coord[0], coord[1] ]
+         bounds.extend( newCoord );
+      }
+
+      state.map?.fitBounds( bounds, { padding: 120 } )
+
+      const sourceData: AnySourceData = {
+         type: "geojson",
+         data: {
+            type: "FeatureCollection",
+            features: [
+               { 
+                  type: "Feature",
+                  properties: {},
+                  geometry: {
+                     type: 'LineString',
+                     coordinates: coords
+                  }
+               }
+            ]
+         }
+      }
+
+      if( !!state.map?.getLayer( 'RouteString' ) ){
+         state.map?.removeLayer( 'RouteString' );
+         state.map?.removeSource('RouteString');
+      }
+
+      state.map?.addSource( "RouteString", sourceData );
+      state.map?.addLayer( {
+         id: "RouteString",
+         type: "line",
+         source: "RouteString",
+         layout: {
+            'line-cap': "round",
+            'line-join': 'round',
+         },
+         paint: {
+            'line-color':'black',
+            'line-width': 5
+         }
+      } )
+
+
+
    }
 
    return (
